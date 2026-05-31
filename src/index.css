@@ -1,0 +1,555 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap');
+
+:root {
+  --blue: #BACDED;
+  --lavender: #E7E6FF;
+  --cream: #FAF4E4;
+  --pink-soft: #F8E6EF;
+  --pink: #F3C1D9;
+  --yellow: #F5D76E;
+  --yellow-soft: #FFF3C4;
+  --green: #9EB16F;
+  --purple: #AF93D6;
+  --purple-soft: #C4A7E7;
+  --danger: #ff6b6b;
+  --text: #2e2e2e;
+  font-family: 'Montserrat', sans-serif;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+code {
+  background: rgba(250, 244, 228, 0.8);
+  border-radius: 8px;
+  padding: 2px 7px;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+/* ===================== LOGIN, basado en login.css de Thymeleaf ===================== */
+.login-page {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--blue);
+  position: relative;
+  overflow: hidden;
+  padding: 28px;
+}
+
+.login-page::before,
+.login-page::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: clamp(80px, 15vw, 180px);
+  height: 100%;
+  z-index: 2;
+}
+
+.login-page::before {
+  left: 0;
+  background: repeating-linear-gradient(90deg, #FCBAE4, #F3C1D9 10px, #F8E6EF 10px, #F8E6EF 20px);
+}
+
+.login-page::after {
+  right: 0;
+  background: repeating-linear-gradient(90deg, #F6DB70, #F5D76E 10px, #FFF3C4 10px, #FFF3C4 20px);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: min(520px, calc(100vw - 240px));
+  z-index: 3;
+}
+
+.login-form .title {
+  font-size: clamp(30px, 5vw, 44px);
+  font-weight: 800;
+  color: var(--text);
+}
+
+.login-subtitle {
+  color: rgba(46, 46, 46, 0.72);
+  text-align: center;
+}
+
+.login-lock {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--cream);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.login-form label {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  width: min(420px, 100%);
+  text-align: left;
+}
+
+.login-form .MuiTextField-root {
+  width: min(420px, 100%);
+}
+
+.login-api-alert {
+  width: min(520px, 100%);
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+}
+
+.decor {
+  pointer-events: none;
+}
+
+.login-decor {
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.login-decor img,
+.side-decor img {
+  width: 150px;
+  max-width: 100%;
+}
+
+.login-decor.left {
+  left: clamp(50px, 12vw, 150px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  top: 50%;
+  transform: translateX(-30%) translateY(calc(-50% + 20px));
+}
+
+.login-decor.right {
+  right: clamp(50px, 12vw, 150px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  top: 50%;
+  transform: translateX(30%) translateY(calc(-50% + 20px));
+}
+
+.login-decor.bottom {
+  bottom: -20px;
+  left: 50%;
+  display: flex;
+  gap: 18px;
+  transform: translateX(-50%) translateY(20px);
+}
+
+.login-page:has(button:hover) .login-decor.left {
+  opacity: 1;
+  transform: translateX(-30%) translateY(calc(-50% - 10px));
+}
+
+.login-page:has(button:hover) .login-decor.right {
+  opacity: 1;
+  transform: translateX(30%) translateY(calc(-50% - 10px));
+}
+
+.login-page:has(button:hover) .login-decor.bottom {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ===================== DASHBOARD, basado en dashboard.css ===================== */
+.dashboard-shell {
+  position: relative;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--blue), var(--lavender));
+  color: #1f1f1f;
+  overflow-x: hidden;
+  padding: 1px 0 40px;
+}
+
+.side-decor {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 240px;
+  z-index: 0;
+  opacity: 0.18;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  filter: blur(0.2px);
+}
+
+.side-decor.left { left: 0; }
+.side-decor.right { right: 0; }
+
+.side-decor .stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+  gap: 70px;
+  padding: 40px 0;
+}
+
+.page-wrapper {
+  position: relative;
+  z-index: 2;
+  width: min(1100px, calc(100% - 280px));
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.topbar {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  border-radius: 28px;
+  padding: 18px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 12px;
+}
+
+.tab {
+  padding: 10px 18px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 800;
+  color: var(--text);
+  transition: all 0.2s ease;
+  border: 0;
+}
+
+.tab:hover,
+.tab.active {
+  transform: translateY(-2px);
+  filter: brightness(1.02);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+}
+
+.dashboard { background: #f3d36b; }
+.users { background: #f7a6c6; }
+.exercises { background: #b7c9e6; }
+.permisos { background: #9dbb7c; }
+.more-tab { background: var(--pink-soft) !important; color: var(--text) !important; min-width: auto !important; }
+
+.user-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.avatar {
+  background: white !important;
+  color: var(--text) !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-weight: 800;
+}
+
+.logout-icon {
+  background: var(--pink-soft) !important;
+}
+
+.hero-card {
+  background: linear-gradient(135deg, var(--cream), var(--pink-soft));
+  border-radius: 28px;
+  padding: 32px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.06);
+}
+
+.hero-card h1,
+.hero-card h2 {
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 800;
+}
+
+.hero-card p {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.hero-chip {
+  background: var(--yellow-soft) !important;
+  color: var(--text) !important;
+  padding: 18px 10px !important;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 22px;
+}
+
+.dashboard-card {
+  position: relative;
+  background: var(--cream);
+  border-radius: 24px;
+  padding: 24px;
+  min-height: 180px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.06);
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-6px);
+  background: #ffffff;
+  box-shadow: 0 16px 30px rgba(0,0,0,0.12);
+}
+
+.card-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  background: var(--pink);
+}
+
+.card-count {
+  font-size: 28px;
+  font-weight: 800;
+  opacity: 0.65;
+}
+
+.quick-panel,
+.filter-card {
+  background: rgba(255,255,255,0.72);
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.06);
+}
+
+.pastel-chip {
+  background: var(--yellow) !important;
+  color: var(--text) !important;
+}
+
+.pastel-alert {
+  border-radius: 18px !important;
+  background: rgba(255,255,255,0.55) !important;
+}
+
+/* ===================== LISTAS / CRUD, inspirado en permission.css y user-list.css ===================== */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,0.76);
+  padding: 22px 26px;
+  border-radius: 24px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.06);
+  gap: 16px;
+}
+
+.entity-list,
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 16px 18px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: 0.2s;
+  gap: 18px;
+}
+
+.entity-row:nth-child(3n + 1) { background: var(--cream); }
+.entity-row:nth-child(3n + 2) { background: #ffffff; }
+.entity-row:nth-child(3n + 3) { background: #f4f7ff; }
+
+.row:hover {
+  transform: translateY(-2px);
+}
+
+.info strong {
+  font-size: 16px;
+  font-weight: 800;
+  display: block;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.btn-small {
+  background: var(--pink) !important;
+  padding: 7px 12px !important;
+  border-radius: 12px !important;
+  font-size: 13px !important;
+  text-decoration: none;
+  color: var(--text) !important;
+  font-weight: 700 !important;
+  transition: 0.2s;
+}
+
+.icon-action {
+  width: 38px;
+  height: 38px;
+}
+
+.danger {
+  background: var(--danger) !important;
+  color: white !important;
+  padding: 7px 12px !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  transition: 0.2s;
+}
+
+.danger:hover,
+.btn-small:hover {
+  transform: scale(1.05);
+}
+
+.loading-box {
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.55);
+  border-radius: 24px;
+}
+
+.json-box {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #f4f7ff;
+  border-radius: 16px;
+  padding: 18px;
+  color: var(--text);
+  margin: 0;
+}
+
+.page-fade {
+  animation: fadeIn 160ms ease-out;
+}
+
+.mini-user-card {
+  background: var(--cream) !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 980px) {
+  .page-wrapper {
+    width: min(100% - 28px, 1100px);
+    margin: 22px auto;
+  }
+
+  .side-decor {
+    display: none;
+  }
+
+  .topbar,
+  .section-header,
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .user-box,
+  .actions {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 620px) {
+  .login-page::before,
+  .login-page::after,
+  .login-decor {
+    display: none;
+  }
+
+  .login-form {
+    width: 100%;
+  }
+
+  .hero-card,
+  .section-header,
+  .quick-panel,
+  .filter-card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .nav-tabs {
+    width: 100%;
+  }
+
+  .tab {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+.login-helper {
+  max-width: 420px;
+  text-align: center;
+  color: #6f6977;
+  font-size: 0.85rem;
+}
