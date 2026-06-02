@@ -17,7 +17,7 @@ export const entityConfigs = [
       { name: 'age', label: 'Edad' },
       { name: 'weight', label: 'Peso' },
       { name: 'height', label: 'Estatura' },
-      { name: 'roleIds', label: 'Roles' }
+      { name: 'roleIds', label: 'Roles', optionsEndpoint: '/api/roles', optionLabel: 'name', optionValue: 'id' }
     ],
     fields: [
       { name: 'firstName', label: 'Nombre', type: 'text', required: true },
@@ -42,7 +42,7 @@ export const entityConfigs = [
     columns: [
       { name: 'id', label: 'ID' },
       { name: 'name', label: 'Nombre' },
-      { name: 'permissionIds', label: 'Permisos' }
+      { name: 'permissionIds', label: 'Permisos', optionsEndpoint: '/api/permissions', optionLabel: 'name', optionValue: 'id' }
     ],
     fields: [
       { name: 'name', label: 'Nombre', type: 'text', required: true },
@@ -81,7 +81,7 @@ export const entityConfigs = [
       { name: 'name', label: 'Nombre' },
       { name: 'date', label: 'Fecha' },
       { name: 'description', label: 'Descripción' },
-      { name: 'physicalSpaceId', label: 'Espacio físico' }
+      { name: 'physicalSpaceId', label: 'Espacio físico', optionsEndpoint: '/api/physicalspaces', optionLabel: 'name', optionValue: 'id' }
     ],
     fields: [
       { name: 'name', label: 'Nombre', type: 'text', required: true },
@@ -126,9 +126,9 @@ export const entityConfigs = [
       { name: 'id', label: 'ID' },
       { name: 'routineName', label: 'Nombre' },
       { name: 'visibility', label: 'Pública' },
-      { name: 'difficultyId', label: 'Dificultad' },
-      { name: 'typeId', label: 'Tipo' },
-      { name: 'ownerId', label: 'Propietario' }
+      { name: 'difficultyId', label: 'Dificultad', optionsEndpoint: '/api/difficulties', optionLabel: 'difficultyName', optionValue: 'id' },
+      { name: 'typeId', label: 'Tipo', optionsEndpoint: '/api/types', optionLabel: 'typeName', optionValue: 'id' },
+      { name: 'ownerId', label: 'Propietario', optionsEndpoint: '/api/users', optionLabel: ['firstName', 'lastName'], optionValue: 'id' }
     ],
     fields: [
       { name: 'routineName', label: 'Nombre', type: 'text', required: true },
@@ -136,7 +136,7 @@ export const entityConfigs = [
       { name: 'difficultyId', label: 'Dificultad', type: 'select', required: true, optionsEndpoint: '/api/difficulties', optionLabel: 'difficultyName', optionValue: 'id' },
       { name: 'typeId', label: 'Tipo', type: 'select', required: true, optionsEndpoint: '/api/types', optionLabel: 'typeName', optionValue: 'id' },
       { name: 'ownerId', label: 'Propietario', type: 'select', required: true, optionsEndpoint: '/api/users', optionLabel: ['firstName', 'lastName'], optionValue: 'id' },
-      { name: 'routineExerciseIds', label: 'IDs rutina-ejercicio', type: 'multiNumber' }
+      { name: 'routineExerciseIds', label: 'Ejercicios asociados', type: 'multiNumber', readOnly: true }
     ]
   },
   {
@@ -155,13 +155,27 @@ export const entityConfigs = [
       { name: 'id', label: 'ID' },
       { name: 'exerciseName', label: 'Nombre' },
       { name: 'description', label: 'Descripción' },
-      { name: 'visualSupportIds', label: 'Soportes' }
+      {
+        name: 'visualSupportIds',
+        label: 'Soportes',
+        optionsEndpoint: '/api/visual-supports',
+        optionLabel: (support) => `${support.supportType} #${support.id}`,
+        optionValue: 'id'
+      }
     ],
     fields: [
       { name: 'exerciseName', label: 'Nombre', type: 'text', required: true },
       { name: 'description', label: 'Descripción', type: 'textarea', required: true },
-      { name: 'visualSupportIds', label: 'Soportes visuales', type: 'multiNumber' },
-      { name: 'routineExerciseIds', label: 'IDs rutina-ejercicio', type: 'multiNumber' }
+      {
+        name: 'visualSupportIds',
+        label: 'Soportes visuales',
+        type: 'multiSelect',
+        optionsEndpoint: '/api/visual-supports',
+        optionLabel: (support) => `${support.supportType} #${support.id}`,
+        optionValue: 'id',
+        readOnly: true
+      },
+      { name: 'routineExerciseIds', label: 'Rutinas asociadas', type: 'multiNumber', readOnly: true }
     ]
   },
   {
@@ -182,7 +196,13 @@ export const entityConfigs = [
       { name: 'series', label: 'Series' },
       { name: 'repetitions', label: 'Repeticiones' },
       { name: 'weight', label: 'Peso' },
-      { name: 'routineExerciseId', label: 'Rutina-ejercicio' }
+      {
+        name: 'routineExerciseId',
+        label: 'Ejercicio',
+        optionsEndpoint: '/api/exercises',
+        optionValue: 'id',
+        optionLabel: (exercise) => `#${exercise.id} · ${exercise.exerciseName}`
+      }
     ],
     fields: [
       { name: 'date', label: 'Fecha', type: 'date', required: true },
@@ -192,7 +212,16 @@ export const entityConfigs = [
       { name: 'repetitions', label: 'Repeticiones', type: 'number', required: true },
       { name: 'weight', label: 'Peso', type: 'number', required: true },
       { name: 'equipmentUsed', label: 'Equipo usado', type: 'text' },
-      { name: 'routineExerciseId', label: 'ID rutina-ejercicio', type: 'number', required: true }
+      {
+        name: 'routineExerciseId',
+        label: 'Ejercicio',
+        type: 'select',
+        required: true,
+        optionsEndpoint: '/api/exercises',
+        optionValue: 'id',
+        optionLabel: (exercise) => `#${exercise.id} · ${exercise.exerciseName}`,
+        helperText: 'Selecciona el ejercicio asociado al registro.'
+      }
     ]
   },
   {
@@ -210,8 +239,8 @@ export const entityConfigs = [
       { name: 'id', label: 'ID' },
       { name: 'message', label: 'Mensaje' },
       { name: 'date', label: 'Fecha' },
-      { name: 'senderId', label: 'Remitente' },
-      { name: 'receiverId', label: 'Receptor' }
+      { name: 'senderId', label: 'Remitente', optionsEndpoint: '/api/users', optionLabel: ['firstName', 'lastName'], optionValue: 'id' },
+      { name: 'receiverId', label: 'Receptor', optionsEndpoint: '/api/users', optionLabel: ['firstName', 'lastName'], optionValue: 'id' }
     ],
     fields: [
       { name: 'message', label: 'Mensaje', type: 'textarea', required: true },
@@ -232,7 +261,7 @@ export const entityConfigs = [
       { name: 'id', label: 'ID' },
       { name: 'supportType', label: 'Tipo' },
       { name: 'url', label: 'URL' },
-      { name: 'exerciseId', label: 'Ejercicio' }
+      { name: 'exerciseId', label: 'Ejercicio', optionsEndpoint: '/api/exercises', optionLabel: 'exerciseName', optionValue: 'id' }
     ],
     fields: [
       { name: 'supportType', label: 'Tipo de soporte', type: 'text', required: true },

@@ -32,7 +32,11 @@ const router = createBrowserRouter([
           { path: '/', element: <DashboardPage /> },
           ...entityConfigs.map((config) => ({
             path: config.route.replace(/^\//, ''),
-            element: <EntityPage config={config} />
+            element: (
+                <ProtectedRoute permission={config.requiredPermission}>
+                  <EntityPage config={config} />
+                </ProtectedRoute>
+            )
           }))
         ]
       },

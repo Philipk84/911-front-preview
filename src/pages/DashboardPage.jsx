@@ -26,8 +26,8 @@ export default function DashboardPage() {
   const [counts, setCounts] = useState({})
 
   const visibleEntities = useMemo(
-    () => entityConfigs.filter((config) => auth.hasPermission(config.requiredPermission)),
-    [auth]
+      () => entityConfigs.filter((config) => auth.hasPermission(config.requiredPermission)),
+      [auth]
   )
 
   const featured = useMemo(() => {
@@ -40,6 +40,7 @@ export default function DashboardPage() {
 
     async function loadCounts() {
       const result = {}
+
       for (const config of featured) {
         try {
           const rows = await listItems(config.endpoint)
@@ -53,46 +54,74 @@ export default function DashboardPage() {
     }
 
     loadCounts()
-    return () => { mounted = false }
+
+    return () => {
+      mounted = false
+    }
   }, [featured])
 
   return (
-    <Box className="page-fade">
-      <section className="hero-card">
-        <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems={{ md: 'center' }} justifyContent="space-between">
-          <Box>
-            <Typography variant="h4" component="h1">Panel FitCampus</Typography>
-          </Box>
-        </Stack>
-      </section>
-
-      <section className="cards-grid">
-        {featured.map((config) => (
-          <Link key={config.key} to={config.route} className="dashboard-card">
-            <Stack direction="row" alignItems="center" justifyContent="space-between">
-              <span className="card-icon">{iconMap[config.key] || <FitnessCenterIcon />}</span>
-              <span className="card-count">{counts[config.key] ?? '...'}</span>
-            </Stack>
+      <Box className="page-fade">
+        <section className="hero-card">
+          <Stack
+              direction={{ xs: 'column', md: 'row' }}
+              spacing={2}
+              sx={{
+                alignItems: { xs: 'flex-start', md: 'center' },
+                justifyContent: 'space-between'
+              }}
+          >
             <Box>
-              <Typography variant="h6">{config.title}</Typography>
-              <Typography variant="body2">Gestionar {config.singular}s desde el API REST.</Typography>
+              <Typography variant="h4" component="h1">Panel FitCampus</Typography>
+              <Typography variant="body2" color="text.secondary">
+                Administra usuarios, rutinas, ejercicios, eventos y progreso desde una SPA conectada al API REST.
+              </Typography>
             </Box>
-          </Link>
-        ))}
-      </section>
+          </Stack>
+        </section>
 
-      <section className="quick-panel">
-        <Typography variant="h6">Módulos disponibles</Typography>
-        <Stack direction="row" flexWrap="wrap" gap={1} sx={{ mt: 1.5 }}>
-          {visibleEntities.map((config) => (
-            <Chip key={config.key} component={Link} to={config.route} clickable label={config.title} className="pastel-chip" />
+        <section className="cards-grid">
+          {featured.map((config) => (
+              <Link key={config.key} to={config.route} className="dashboard-card">
+                <Stack
+                    direction="row"
+                    sx={{
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}
+                >
+                  <span className="card-icon">{iconMap[config.key] || <FitnessCenterIcon />}</span>
+                  <span className="card-count">{counts[config.key] ?? '...'}</span>
+                </Stack>
+
+                <Box>
+                  <Typography variant="h6">{config.title}</Typography>
+                  <Typography variant="body2">Gestionar {config.singular}s desde el API REST.</Typography>
+                </Box>
+              </Link>
           ))}
-        </Stack>
-      </section>
+        </section>
 
-      <Alert severity="info" className="pastel-alert">
-        El menú respeta los permisos que llegan en el token. Si un módulo no aparece, revisa los authorities del usuario autenticado.
-      </Alert>
-    </Box>
+        <section className="quick-panel">
+          <Typography variant="h6">Módulos disponibles</Typography>
+
+          <Box className="module-chip-grid">
+            {visibleEntities.map((config) => (
+                <Chip
+                    key={config.key}
+                    component={Link}
+                    to={config.route}
+                    clickable
+                    label={config.title}
+                    className="pastel-chip module-chip"
+                />
+            ))}
+          </Box>
+        </section>
+
+        <Alert severity="info" className="pastel-alert">
+          El menú respeta los permisos que llegan en el token. Si un módulo no aparece, revisa los authorities del usuario autenticado.
+        </Alert>
+      </Box>
   )
 }
